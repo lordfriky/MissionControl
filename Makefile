@@ -33,6 +33,8 @@ dist: all
 	cp mc_mitm/out/nintendo_nx_arm64_armv8a/release/mc_mitm.nsp dist/atmosphere/contents/$(MC_MITM_TID)/exefs.nsp
 	echo "btdrv" >> dist/atmosphere/contents/$(MC_MITM_TID)/mitm.lst
 	echo "btm" >> dist/atmosphere/contents/$(MC_MITM_TID)/mitm.lst
+	echo "usb:hs" >> dist/atmosphere/contents/$(MC_MITM_TID)/mitm.lst
+	echo "usb:hs:a" >> dist/atmosphere/contents/$(MC_MITM_TID)/mitm.lst
 
 	mkdir -p dist/atmosphere/contents/$(MC_MITM_TID)/flags
 	touch dist/atmosphere/contents/$(MC_MITM_TID)/flags/boot2.flag

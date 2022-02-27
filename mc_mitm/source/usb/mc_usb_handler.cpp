@@ -75,6 +75,11 @@ namespace ams::usb {
         constinit os::ThreadType g_thread;
 
         void UsbThreadFunction(void *) {
+            // Loop until we can initialise usb:hs
+            while (R_FAILED(usbHsInitialize())) {
+                os::SleepThread(ams::TimeSpan::FromMilliSeconds(200));
+            }
+
             Event if_event;
             R_ABORT_UNLESS(usbHsCreateInterfaceAvailableEvent(&if_event, true, 0, controller::Dualshock3Controller::GetUsbInterfaceFilter()));
 

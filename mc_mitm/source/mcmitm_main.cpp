@@ -19,6 +19,8 @@
 #include "mcmitm_config.hpp"
 #include "mcmitm_process_monitor.hpp"
 
+#include "logging.hpp"
+
 namespace ams {
 
     namespace mitm {
@@ -72,7 +74,6 @@ namespace ams {
             R_ABORT_UNLESS(pmdmntInitialize());
             R_ABORT_UNLESS(pminfoInitialize());
             R_ABORT_UNLESS(pscmInitialize());
-            R_ABORT_UNLESS(usbHsInitialize());
 
             R_ABORT_UNLESS(fs::MountSdCard("sdmc"));
         }
@@ -87,6 +88,8 @@ namespace ams {
     }
 
     void Main() {
+        ams::log::Initialize();
+
         // Launch mitm and other modules
         mitm::LaunchModules();
 

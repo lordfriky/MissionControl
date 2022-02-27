@@ -21,6 +21,7 @@
 #include "bluetooth_mitm/btdrv_mitm_service.hpp"
 #include "bluetooth_mitm/bluetoothmitm_module.hpp"
 #include "btm_mitm/btmmitm_module.hpp"
+#include "usb_mitm/usbmitm_module.hpp"
 #include "mc/mc_module.hpp"
 #include "bluetooth_mitm/bluetooth/bluetooth_events.hpp"
 #include "bluetooth_mitm/bluetooth/bluetooth_core.hpp"
@@ -131,12 +132,13 @@ namespace ams::mitm {
         os::StartThread(&init_thread);
 
         // Launch IPC servers
+        ams::mitm::usb::Launch();
         ams::mitm::bluetooth::Launch();
         ams::mitm::btm::Launch();
         ams::mc::Launch();
 
         // Launch additional modules
-        ams::usb::Launch();
+        // ams::usb::Launch();
 
         // Wait for initialisation thread to terminate
         os::WaitThread(&init_thread);
@@ -148,6 +150,7 @@ namespace ams::mitm {
         ams::mc::WaitFinished();
         ams::mitm::btm::WaitFinished();
         ams::mitm::bluetooth::WaitFinished();
+        ams::mitm::usb::WaitFinished();
     }
 
     void WaitInitialized() {
