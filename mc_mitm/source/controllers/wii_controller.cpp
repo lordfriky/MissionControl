@@ -255,6 +255,8 @@ namespace ams::controller {
                 this->MapTaTaConExtension(ext); break;
             case WiiExtensionController_BalanceBoard:
                 this->MapBalanceBoardExtension(ext); break;
+            case WiiExtensionController_GHGuitar:
+                this->MapGHGuitarExtension(ext); break;
             case WiiExtensionController_MotionPlus:
             case WiiExtensionController_MotionPlusNunchuckPassthrough:
             case WiiExtensionController_MotionPlusClassicControllerPassthrough:
@@ -378,6 +380,24 @@ namespace ams::controller {
             std::clamp<u16>(static_cast<u16>((x * (UINT12_MAX / 2)) + STICK_CENTER), STICK_MIN, STICK_MAX),
             std::clamp<u16>(static_cast<u16>((y * (UINT12_MAX / 2)) + STICK_CENTER), STICK_MIN, STICK_MAX)
         );
+    }
+
+    void WiiController::MapGHGuitarExtension(const u8 ext[]) {
+        auto extension_data = reinterpret_cast<const GHGuitarExtensionData *>(ext);
+
+        m_buttons.dpad_left  = (!extension_data->green) & (!extension_data->up | !extension_data->down);
+        m_buttons.dpad_right = (!extension_data->red) & (!extension_data->up | !extension_data->down);
+        m_buttons.Y          = (!extension_data->yellow) & (!extension_data->up | !extension_data->down);
+        m_buttons.X          = (!extension_data->blue) & (!extension_data->up | !extension_data->down);
+        m_buttons.A          = (!extension_data->orange) & (!extension_data->up | !extension_data->down);
+        
+        // Todo: stick
+
+        m_buttons.dpad_up    = !extension_data->up;
+        m_buttons.dpad_down  = !extension_data->down;
+
+        m_buttons.minus      = !extension_data->plus;
+        m_buttons.ZR         = !extension_data->minus_star;
     }
 
     void WiiController::MapMotionPlusExtension(const u8 ext[]) {
@@ -515,6 +535,7 @@ namespace ams::controller {
                         case WiiExtensionController_Nunchuck:
                         case WiiExtensionController_ClassicPro:
                         case WiiExtensionController_TaTaCon:
+                        case WiiExtensionController_GHGuitar:
                             m_orientation = WiiControllerOrientation_Vertical;
                             R_TRY(this->SetReportMode(0x35));
                             break;
@@ -627,6 +648,8 @@ namespace ams::controller {
                     return WiiExtensionController_TaTaCon;
                 case 0xA4200402:
                     return WiiExtensionController_BalanceBoard;
+                case 0xA4200103:
+                    return WiiExtensionController_GHGuitar;
                 default:
                     return WiiExtensionController_Unrecognised;
             }

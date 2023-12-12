@@ -40,6 +40,7 @@ namespace ams::controller {
         WiiExtensionController_MotionPlusClassicControllerPassthrough,
         WiiExtensionController_TaTaCon,
         WiiExtensionController_BalanceBoard,
+        WiiExtensionController_GHGuitar,
         WiiExtensionController_Unrecognised,
     };
 
@@ -319,6 +320,34 @@ namespace ams::controller {
         u16 bottom_left_34kg;
     } PACKED;
 
+    struct GHGuitarExtensionData {
+        // Not tested
+        u8            : 2;
+        u8 stick_x    : 6;
+        u8            : 2; 
+        u8 stick_y    : 6;
+        u8            : 3;
+        u8 touch_bar  : 5;
+        u8            : 3;
+        u8 whammy_bar : 5;
+        // Tested
+        u8            : 2;
+        u8 plus       : 1;
+        u8            : 1;
+        u8 minus_star : 1;
+        u8            : 1;
+        u8 down       : 1;
+        u8            : 1;
+        u8 up         : 1;
+        u8            : 1;
+        u8 pedal      : 1;
+        u8 yellow     : 1;
+        u8 green      : 1;
+        u8 blue       : 1;
+        u8 red        : 1;
+        u8 orange     : 1;
+    } PACKED;
+
     struct WiiOutputReport0x10 {
         u8 rumble : 1;
         u8        : 0;
@@ -524,6 +553,7 @@ namespace ams::controller {
             void MapWiiUProControllerExtension(const u8 ext[]);
             void MapTaTaConExtension(const u8 ext[]);
             void MapBalanceBoardExtension(const u8 ext[]);
+            void MapGHGuitarExtension(const u8 ext[]);
             void MapMotionPlusExtension(const u8 ext[]);
             void MapNunchuckExtensionPassthroughMode(const u8 ext[]);
             void MapClassicControllerExtensionPassthroughMode(const u8 ext[]);
